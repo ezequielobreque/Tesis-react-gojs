@@ -1,0 +1,117 @@
+
+/*import { parser} from './MyLex';
+
+// ----------------- Interpreter -----------------
+// Obtains the default CstVisitor constructor to extend.
+const BaseCstVisitor = parser.getBaseCstVisitorConstructor()
+
+// All our semantics go into the visitor, completly separated from the grammar.
+class JsonInterpreter extends BaseCstVisitor {
+  constructor() {
+    super()
+    // This helper will detect any missing or redundant methods on this visitor
+    this.validateVisitor()
+  }
+
+  typeOfObject(ctx) {
+    const entity=this.visit(ctx.TypeOfObject.entity);
+   const composite=this.visit(ctx.TypeOfObject.composite);
+   const relationship=this.visit(ctx.TypeOfObject.relationship);
+
+   return{
+    type: "TypeOfObject",   
+    Entity: entity,
+    Composite: composite,
+    Relationship: relationship
+   }
+  }
+
+  // Note the usage if the "rhs" and "lhs" labels to increase the readability.
+  additionExpression(ctx) {
+    let result = this.visit(ctx.lhs)
+
+    // "rhs" key may be undefined as the grammar defines it as optional (MANY === zero or more).
+    if (ctx.rhs) {
+      ctx.rhs.forEach((rhsOperand, idx) => {
+        // there will be one operator for each rhs operand
+        let rhsValue = this.visit(rhsOperand)
+        let operator = ctx.AdditionOperator[idx]
+
+        if (tokenMatcher(operator, Plus)) {
+          result += rhsValue
+        } else {
+          // Minus
+          result -= rhsValue
+        }
+      })
+    }
+
+    return result
+  }
+
+  multiplicationExpression(ctx) {
+    let result = this.visit(ctx.lhs)
+
+    // "rhs" key may be undefined as the grammar defines it as optional (MANY === zero or more).
+    if (ctx.rhs) {
+      ctx.rhs.forEach((rhsOperand, idx) => {
+        // there will be one operator for each rhs operand
+        let rhsValue = this.visit(rhsOperand)
+        let operator = ctx.MultiplicationOperator[idx]
+
+        if (tokenMatcher(operator, Multi)) {
+          result *= rhsValue
+        } else {
+          // Division
+          result /= rhsValue
+        }
+      })
+    }
+
+    return result
+  }
+
+  atomicExpression(ctx) {
+    if (ctx.parenthesisExpression) {
+      return this.visit(ctx.parenthesisExpression)
+    } else if (ctx.NumberLiteral) {
+      return parseInt(ctx.NumberLiteral[0].image, 10)
+    } else if (ctx.powerFunction) {
+      return this.visit(ctx.powerFunction)
+    }
+  }
+
+  parenthesisExpression(ctx) {
+    // The ctx will also contain the parenthesis tokens, but we don't care about those
+    // in the context of calculating the result.
+    return this.visit(ctx.expression)
+  }
+
+  powerFunction(ctx) {
+    const base = this.visit(ctx.base)
+    const exponent = this.visit(ctx.exponent)
+    return Math.pow(base, exponent)
+  }
+}
+
+// We only need a single interpreter instance because our interpreter has no state.
+const interpreter = new JsonInterpreter()
+
+module.exports = function (text) {
+  // 1. Tokenize the input.
+  const lexResult = CalculatorLexer.tokenize(text)
+
+  // 2. Parse the Tokens vector.
+  parser.input = lexResult.tokens
+  const cst = parser.TypeOfObject()
+
+  // 3. Perform semantics using a CstVisitor.
+  // Note that separation of concerns between the syntactic analysis (parsing) and the semantics.
+  const value = interpreter.visit(cst)
+
+  return {
+    value: value,
+    lexResult: lexResult,
+    parseErrors: parser.errors
+  }
+}*/

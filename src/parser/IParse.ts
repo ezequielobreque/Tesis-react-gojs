@@ -1,11 +1,11 @@
 export interface RootObject {
     Composite: Composite[];
     SemiColon: COMPOSITE[];
-    Entitiy: Entitiy[];
+    Entity: Entity[];
     Relationship: Relationship[];
   }
   
-  interface Relationship {
+export interface Relationship {
     name: string;
     children: Children11;
   }
@@ -19,7 +19,7 @@ export interface RootObject {
     RCurly: COMPOSITE[];
   }
   
-  interface Relation {
+export interface Relation {
     name: string;
     children: Children10;
   }
@@ -32,12 +32,12 @@ export interface RootObject {
     RRound: COMPOSITE[];
   }
   
-  interface Entitiy {
+ export interface Entity {
     name: string;
     children: Children9;
   }
   
-  interface Children9 {
+ export interface Children9 {
     ENTITY: COMPOSITE[];
     StringEntity: COMPOSITE[];
     Coverage?: Coverage[];
@@ -71,12 +71,12 @@ export interface RootObject {
     StringEntity: COMPOSITE[];
   }
   
-  interface PropertyEntity {
+export  interface PropertyEntity {
     name: string;
     children: Children6;
   }
   
-  interface Children6 {
+export  interface Children6 {
     StringEntity: COMPOSITE[];
     IDENTIFIER?: COMPOSITE[];
     Calculated?: Calculated[];
@@ -120,7 +120,7 @@ export interface RootObject {
     RRound: COMPOSITE[];
   }
   
-  interface Composite {
+export  interface Composite {
     name: string;
     children: Children2;
   }
@@ -143,7 +143,7 @@ export interface RootObject {
     StringEntity: COMPOSITE[];
   }
   
-  interface COMPOSITE {
+export  interface COMPOSITE {
     image: string;
     startOffset: number;
     endOffset: number;

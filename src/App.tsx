@@ -1,17 +1,17 @@
 /*
-*  Copyright (C) 1998-2021 by Northwoods Software Corporation. All Rights Reserved.
-*/
+ *  Copyright (C) 1998-2021 by Northwoods Software Corporation. All Rights Reserved.
+ */
 
-import * as go from 'gojs';
-import { produce } from 'immer';
-import * as React from 'react';
+import * as go from "gojs";
+import { produce } from "immer";
+import * as React from "react";
 
-import { DiagramWrapper } from './components/DiagramWrapper';
-import { SelectionInspector } from './components/SelectionInspector';
+import { DiagramWrapper } from "./components/DiagramWrapper";
+import { SelectionInspector } from "./components/SelectionInspector";
 
-import './App.css';
-import { useState } from 'react';
-import {ParserGenerator} from './parser/ParserGenerator'
+import "./App.css";
+import { useState } from "react";
+import { ParserGenerator } from "./parser/ParserGenerator";
 /**
  * Use a linkDataArray since we'll be using a GraphLinksModel,
  * and modelData for demonstration purposes. Note, though, that
@@ -25,85 +25,148 @@ interface AppState {
   skipsDiagramUpdate: boolean;
 }
 
-const App=(props:object)=> {
+const App = (props: object) => {
   // Maps to store key -> arr index for quick lookups
-  const mapNodeKeyIdx: Map<go.Key, number> = new Map<go.Key, number>();;
-  const mapLinkKeyIdx: Map<go.Key, number> = new Map<go.Key, number>();;
-  
-  const IniState = {
-      nodeDataArray: [
-         { key: 0,text: 'Entity', color: 'lightblue',fig:"RoundedRectangle" ,loc: "-200 0"},
-         { key: 1, text: 'Suppliers', color: 'orange' ,fig:"RoundedRectangle", loc: '200 0'},
-         { key: 2, text: 'Gamma', color: 'transparent',fig:'Diamond',margin:2,loc: '0 0'},
-       //  { key: 3, text: 'Delta', color: 'pink' ,fig:"RoundedRectangle"},
-         { key: 4,type:'H', text: 'Id',margin:5, color: 'transparent' ,loc: '200 50',fig:"Ellipse",height:15,width:15},
-         { key: 5,text: 'Entity', color: 'lightblue',fig:"RoundedRectangle",loc: '0 200'},
-         { key: 6, text: 'Suppliers', color: 'orange' ,fig:"RoundedRectangle",loc: '-400 200'},
-         { key: 7, text: 'Suppliers', color: 'orange' ,fig:"RoundedRectangle",loc: '-600 200'}
-        ],
-      linkDataArray: [
-        // { key: -1, from: 0, to: 1, },
-        // { key: -2, from: 0, to: 2 },
-        // { key: -3, from: 1, to: 1 },
-        // { key: -4, from: 2, to: 3 },
-        // { key: -5, from: 3, to: 0 }
-        {Key:-1 ,from: 0, to: 2, text: "0..N", toText: "1" },
-        {Key:-2 ,from: 1, to: 2, text: "1", toText: "1"},
-        {key:-3, from: 1, to: 4 ,arrow:'Standard',routing:'N'},
-        {Key:-4 ,from: 0, to: 5 ,text: "( T , S )",align: new go.Spot(1, -1, 5, 0),fromSpot: "Bottom", toSpot: "Top" },
-        {key:-5, from: 0, to: 6 ,fromSpot: "Bottom", toSpot: "Top" },
-        {key:-6, from: 0, to: 7,fromSpot: "Bottom", toSpot: "Top"},
-      ],
-      modelData: {
-        canRelink: true
-      },
-      selectedData: null,
-      skipsDiagramUpdate: false
-    };
+  const mapNodeKeyIdx: Map<go.Key, number> = new Map<go.Key, number>();
+  const mapLinkKeyIdx: Map<go.Key, number> = new Map<go.Key, number>();
 
-    const [state, setState] = useState(IniState)
-    // init maps
-    // bind handler methods
-  
+  const IniState = {
+    nodeDataArray: [
+      {
+        key: 0,
+        text: "Entity",
+        color: "lightblue",
+        fig: "RoundedRectangle",
+        loc: "-200 0",
+      },
+      {
+        key: 1,
+        text: "Suppliers",
+        color: "orange",
+        fig: "RoundedRectangle",
+        loc: "200 0",
+        isGroup: true,
+      },
+      {
+        key: 2,
+        text: "Gamma",
+        color: "transparent",
+        fig: "Diamond",
+        margin: 2,
+        loc: "0 0",
+      },
+      //  { key: 3, text: 'Delta', color: 'pink' ,fig:"RoundedRectangle"},
+      {
+        key: 4,
+        type: "H",
+        text: "Id",
+        margin: 5,
+        color: "transparent",
+        loc: "200 50",
+        group: 1,
+        fig: "Ellipse",
+        height: 15,
+        width: 15,
+      },
+      {
+        key: 5,
+        text: "( T , S )",
+        color: "Green",
+        margin: 0,
+        fig: "TriangleUp",
+        loc: "0 200",
+      },
+      {
+        key: 6,
+        text: "Entity",
+        color: "lightblue",
+        fig: "RoundedRectangle",
+        loc: "0 200",
+      },
+      {
+        key: 7,
+        text: "Suppliers",
+        color: "orange",
+        fig: "RoundedRectangle",
+        loc: "-400 200",
+      },
+      {
+        key: 8,
+        text: "Suppliers",
+        color: "orange",
+        fig: "RoundedRectangle",
+        loc: "-600 200",
+      },
+    ],
+    linkDataArray: [
+      // { key: -1, from: 0, to: 1, },
+      // { key: -2, from: 0, to: 2 },
+      // { key: -3, from: 1, to: 1 },
+      // { key: -4, from: 2, to: 3 },
+      // { key: -5, from: 3, to: 0 }//text: "( T , S )",align: new go.Spot(1, 0, 5, 5),
+      { Key: -1, from: 0, to: 2, text: "0..N", toText: "1" },
+      { Key: -2, from: 1, to: 2, text: "1", toText: "1" },
+      {
+        key: -3,
+        from: 1,
+        to: 4,
+        text: "(0,N)",
+        arrow: "Standard",
+        routing: "N",
+      },
+      { Key: -4, from: 0, to: 5, fromSpot: "Bottom", toSpot: "Top" },
+      { Key: -5, from: 5, to: 6, fromSpot: "Bottom", toSpot: "Top" },
+      { key: -6, from: 5, to: 7, fromSpot: "Bottom", toSpot: "Top" },
+      { key: -7, from: 5, to: 8, fromSpot: "Bottom", toSpot: "Top" },
+    ],
+    modelData: {
+      canRelink: true,
+    },
+    selectedData: null,
+    skipsDiagramUpdate: false,
+  };
+
+  const [state, setState] = useState(IniState);
+  // init maps
+  // bind handler methods
+
   /**
    * Update map of node keys to their index in the array.
    */
-  const refreshNodeIndex=(nodeArr: Array<go.ObjectData>) =>{
+  const refreshNodeIndex = (nodeArr: Array<go.ObjectData>) => {
     mapNodeKeyIdx.clear();
     nodeArr.forEach((n: go.ObjectData, idx: number) => {
       mapNodeKeyIdx.set(n.key, idx);
     });
-  }
-  const changeStateCallback=(childData:any)=>{
-    setState({...childData});
-  }
+  };
+
+
   /**
    * Update map of link keys to their index in the array.
    */
-  const refreshLinkIndex=(linkArr: Array<go.ObjectData>) =>{
+  const refreshLinkIndex = (linkArr: Array<go.ObjectData>) => {
     mapLinkKeyIdx.clear();
     linkArr.forEach((l: go.ObjectData, idx: number) => {
       mapLinkKeyIdx.set(l.key, idx);
     });
-  }
+  };
 
   /**
    * Handle any relevant DiagramEvents, in case just selection changes.
    * On ChangedSelection, find the corresponding data and set the selectedData state.
    * @param e a GoJS DiagramEvent
    */
-  const handleDiagramEvent=(e: go.DiagramEvent) =>{
+  const handleDiagramEvent = (e: go.DiagramEvent) => {
     const name = e.name;
-    console.log(e);
+
     switch (name) {
-      case 'ChangedSelection': {
+      case "ChangedSelection": {
         const sel = e.subject.first();
-        
         setState(
           produce((draft: AppState) => {
-          
             if (sel) {
               if (sel instanceof go.Node) {
+                console.log("cambie");
                 const idx = mapNodeKeyIdx.get(sel.key);
                 if (idx !== undefined && idx >= 0) {
                   const nd = draft.nodeDataArray[idx];
@@ -111,9 +174,8 @@ const App=(props:object)=> {
                   draft.selectedData = nd;
                 }
               } else if (sel instanceof go.Link) {
-                
                 const idx = mapLinkKeyIdx.get(sel.key);
-                
+
                 if (idx !== undefined && idx >= 0) {
                   const ld = draft.linkDataArray[idx];
                   draft.selectedData = ld;
@@ -126,16 +188,18 @@ const App=(props:object)=> {
         );
         break;
       }
-      default: break;
+      default:
+        break;
     }
-  }
+  };
 
   /**
    * Handle GoJS model changes, which output an object of data changes via Model.toIncrementalData.
    * method iterates over those changes and updates state to keep in sync with the GoJS model.
    * @param obj a JSON-formatted string
    */
-  const handleModelChange=(obj: go.IncrementalData) =>{
+
+  const handleModelChange = (obj: go.IncrementalData) => {
     const insertedNodeKeys = obj.insertedNodeKeys;
     const modifiedNodeData = obj.modifiedNodeData;
     const removedNodeKeys = obj.removedNodeKeys;
@@ -150,6 +214,7 @@ const App=(props:object)=> {
     setState(
       produce((draft: AppState) => {
         let narr = draft.nodeDataArray;
+
         if (modifiedNodeData) {
           modifiedNodeData.forEach((nd: go.ObjectData) => {
             modifiedNodeMap.set(nd.key, nd);
@@ -166,7 +231,8 @@ const App=(props:object)=> {
           insertedNodeKeys.forEach((key: go.Key) => {
             const nd = modifiedNodeMap.get(key);
             const idx = mapNodeKeyIdx.get(key);
-            if (nd && idx === undefined) {  // nodes won't be added if they already exist
+            if (nd && idx === undefined) {
+              // nodes won't be added if they already exist
               mapNodeKeyIdx.set(nd.key, narr.length);
               narr.push(nd);
             }
@@ -197,14 +263,14 @@ const App=(props:object)=> {
           });
         }
         if (insertedLinkKeys) {
-          insertedLinkKeys.forEach((key: go.Key) => {
+          /*insertedLinkKeys.forEach((key: go.Key) => {
             const ld = modifiedLinkMap.get(key);
             const idx = mapLinkKeyIdx.get(key);
             if (ld && idx === undefined) {  // links won't be added if they already exist
               mapLinkKeyIdx.set(ld.key, larr.length);
               larr.push(ld);
             }
-          });
+          });*/
         }
         if (removedLinkKeys) {
           larr = larr.filter((ld: go.ObjectData) => {
@@ -220,10 +286,10 @@ const App=(props:object)=> {
         if (modifiedModelData) {
           draft.modelData = modifiedModelData;
         }
-        draft.skipsDiagramUpdate = true;  // the GoJS model already knows about these updates
+        draft.skipsDiagramUpdate = true; // the GoJS model already knows about these updates
       })
     );
-  }
+  };
 
   /**
    * Handle inspector changes, and on input field blurs, update node/link data state.
@@ -231,14 +297,15 @@ const App=(props:object)=> {
    * @param value the new value of that property
    * @param isBlur whether the input event was a blur, indicating the edit is complete
    */
-  const handleInputChange=(path: string, value: string, isBlur: boolean)=>{
+  const handleInputChange = (path: string, value: string, isBlur: boolean) => {
     setState(
       produce((draft: AppState) => {
-        const data = draft.selectedData as go.ObjectData;  // only reached if selectedData isn't null
+        const data = draft.selectedData as go.ObjectData; // only reached if selectedData isn't null
         data[path] = value;
         if (isBlur) {
           const key = data.key;
-          if (key < 0) {  // negative keys are links
+          if (key < 0) {
+            // negative keys are links
             const idx = mapLinkKeyIdx.get(key);
             if (idx !== undefined && idx >= 0) {
               draft.linkDataArray[idx] = data;
@@ -254,34 +321,53 @@ const App=(props:object)=> {
         }
       })
     );
-  }
+  };
 
   /**
    * Handle changes to the checkbox on whether to allow relinking.
    * @param e a change event from the checkbox
    */
-  const handleRelinkChange=(e: any)=> {
+  const handleRelinkChange = (e: any) => {
     const target = e.target;
     const value = target.checked;
-    setState({ ...state,modelData: { canRelink: value }, skipsDiagramUpdate: false });
-  }
+    setState({
+      ...state,
+      modelData: { canRelink: value },
+      skipsDiagramUpdate: false,
+    });
+  };
 
-    
   refreshNodeIndex(state.nodeDataArray);
   refreshLinkIndex(state.linkDataArray);
-  
-    const selectedData = state.selectedData;
-    let inspector;
-    if (selectedData !== null) {
-      inspector = <SelectionInspector
-                    selectedData={state.selectedData}
-                    onInputChange={handleInputChange}
-                  />;
-    }
+  const changeStateCallback = React.useCallback(
+    (childData: any) => {
+      console.log(childData);
+      setState(childData);
+      refreshNodeIndex(childData.nodeDataArray);
+      refreshLinkIndex(childData.linkDataArray);
+    },
+    []
+  );
+  const selectedData = state.selectedData;
+  React.useEffect(() => {
+    console.log(state);
+  }, [selectedData]);
+  let inspector;
+  if (selectedData !== null) {
+    inspector = (
+      <SelectionInspector
+        selectedData={state.selectedData}
+        onInputChange={handleInputChange}
+      />
+    );
+  }
 
-    return (
-      <div>
-      <ParserGenerator changeStateCallback={changeStateCallback}/>
+  return (
+    <div>
+      <ParserGenerator
+        changeStateCallback={changeStateCallback}
+        nodeData={state}
+      />
       <div>
         <DiagramWrapper
           nodeDataArray={state.nodeDataArray}
@@ -294,16 +380,16 @@ const App=(props:object)=> {
         <label>
           Allow Relinking?
           <input
-            type='checkbox'
-            id='relink'
+            type="checkbox"
+            id="relink"
             checked={state.modelData.canRelink}
-            onChange={handleRelinkChange} />
+            onChange={handleRelinkChange}
+          />
         </label>
         {inspector}
       </div>
-      </div>
-    );
-  
-}
+    </div>
+  );
+};
 
 export default App;

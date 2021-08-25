@@ -22,6 +22,7 @@ export class InspectorRow extends React.PureComponent<InspectorRowProps, {}> {
   }
 
   private formatLocation(loc: string): string {
+    
     const locArr = loc.split(' ');
     if (locArr.length === 2) {
       const x = parseFloat(locArr[0]);
@@ -35,7 +36,7 @@ export class InspectorRow extends React.PureComponent<InspectorRowProps, {}> {
 
   public render() {
     let val = this.props.value;
-    if (this.props.id === 'loc') {
+    if (this.props?.id === 'loc' &&  this.props.value) {
       val = this.formatLocation(this.props.value);
     }
     return (

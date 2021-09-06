@@ -1,20 +1,15 @@
 
 .parser-div{
-    z-index:3;
-    display: flex;
-    background-color:white;
     position: absolute;
-    left:0;
-    top:0;
-    height:100vh;
-    width:20vw; 
+    height:100%;
+    width:20%; 
 }
-.submit-btn{
+/* .submit-btn{
     align-self: flex-end;
     position: absolute;
     left: 13vw;
     bottom: 2vh;
-}
+} */
 
 
 .markEvalError {

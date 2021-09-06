@@ -20,6 +20,10 @@ ENTITY proveedor CHILD OF persona{
     cuit IDENTIFIER 
 };
 
+ENTITY proveedorr CHILD OF persona{
+    cuit IDENTIFIER 
+};
+
 ENTITY empleado CHILD OF persona{
     legajo IDENTIFIER
 };

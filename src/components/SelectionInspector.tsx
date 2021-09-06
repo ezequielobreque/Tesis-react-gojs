@@ -18,7 +18,6 @@ export class SelectionInspector extends React.PureComponent<SelectionInspectorPr
    * Render the object data, passing down property keys and values.
    */
   private renderObjectDetails() {
-    console.log(this.props.selectedData);
     const selObj = this.props.selectedData;
     const dets = [];
     for (const k in selObj) {

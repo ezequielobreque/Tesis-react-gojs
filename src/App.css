@@ -1,3 +1,4 @@
+
 label {
   font: 300 1rem Roboto, helvetica, sans-serif;
   color: #212121; /* Grey 900 */
@@ -25,3 +26,8 @@ p {
   border-radius: 0px;
   box-shadow: inset 0px 0px 0px 0px #F0F0F0;
   }
+
+  
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

@@ -401,7 +401,7 @@ export class ActionsFunctionsClass {
 	// }
 	nodeIsExistinInDataNode() {
 		if (this.stateData) {
-			if (this.stateData.nodeDataArray.length == this.FinalDataNodes.nodeDataArray.length) {
+			if (this.stateData?.nodeDataArray?.length == this.FinalDataNodes?.nodeDataArray?.length) {
 				this.FinalDataNodes.nodeDataArray.map((nodoNuevo) => {
 					const nodoViejo = this.stateData.nodeDataArray.find((x) => nodoNuevo.text == x.text);
 					if (nodoViejo) {

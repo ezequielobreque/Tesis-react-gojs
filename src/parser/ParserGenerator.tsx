@@ -18,7 +18,7 @@ import React from "react";
   text: string;
 }*/
 
-export const ParserGenerator = ({ changeStateCallback, stateData }: any) => {
+export const ParserGenerator = ({ changeStateCallback, stateData, textoState,setTextoState }: any) => {
 	/*const createDataNodes=()=>{
     changeStateCallback();
   }*/
@@ -48,7 +48,7 @@ export const ParserGenerator = ({ changeStateCallback, stateData }: any) => {
 	// +" RELTIONSHIP compro{    factura (1, 1),    persona (1, N)};"
 	// +"ENTITY proveedor CHILD OF persona{cuit IDENTIFIER };"
 	// +"ENTITY persona COVERAGE (PARTIAL, OVERLAY){documento IDENTIFIER, cuil IDENTIFIER,nacimiento,apellido,nombre,    celular (0,1),   domicilio  }");
-	const [texto, setTexto] = useState<string>(stringExample);
+	// const [texto, setTexto] = useState<string>(stringExample);
 	const handleSubmit = (lexAndParseResult: any, instance: CodeMirror.Editor) => {
 		try {
 			console.log("🚀 ~ file: ParserGenerator.tsx ~ line 60 ~ useEffect ~ stateData", stateData);
@@ -88,7 +88,7 @@ export const ParserGenerator = ({ changeStateCallback, stateData }: any) => {
 	//{ "arr": [1,2,3], "obj": {"num":666}}
 	const handleChange = React.useCallback(
 		(instance: CodeMirror.Editor, change: any) => {
-			setTexto(instance.getValue())
+			setTextoState(instance.getValue())
 			const lexAndParseResult = parseJson(instance.getValue());
 		    onInputEditorContentChange(instance, inputEditorMarker, setInputEditorMarker, lexAndParseResult);
 			const children = handleSubmit(lexAndParseResult, instance);
@@ -103,7 +103,7 @@ export const ParserGenerator = ({ changeStateCallback, stateData }: any) => {
 	// const ref = useRef(initialValue)
 
 	return (
-		<div className="w-full h-full">
+		<div className="w-full h-full" style={{minWidth:"400px"}}>
 			{/* <textarea
             style={{width:'100%'}}
             value={texto}
@@ -111,7 +111,7 @@ export const ParserGenerator = ({ changeStateCallback, stateData }: any) => {
             onChange={handleChange}
           /> */}
 			<CodeMirror
-				value={texto}
+				value={textoState}
 				onChange={debo}
 				options={{
 					mode: "text",

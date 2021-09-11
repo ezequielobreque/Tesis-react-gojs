@@ -13,6 +13,7 @@ import "./App.css";
 import { useState } from "react";
 import { ParserGenerator } from "./parser/ParserGenerator";
 import "./text";
+import { CSSTransition } from "react-transition-group";
 import { DataOfNodes } from "./text";
 import { saveAs } from "file-saver";
 /**
@@ -144,8 +145,9 @@ const App = (props: object) => {
 		skipsDiagramUpdate: false,
 	};
 
-	const [state, setState] = useState<any>(DataOfNodes);
+	const [state, setState] = useState<any>(IniState);
 	const [textoState, setTextoState] = useState<string>("");
+	const [animation, setAnimationState] = useState(true);
 	// init maps
 	// bind handler methods
 
@@ -154,7 +156,7 @@ const App = (props: object) => {
 	 */
 	const refreshNodeIndex = (nodeArr: Array<go.ObjectData>) => {
 		mapNodeKeyIdx.clear();
-		nodeArr.forEach((n: go.ObjectData, idx: number) => {
+		nodeArr?.forEach((n: go.ObjectData, idx: number) => {
 			mapNodeKeyIdx.set(n.key, idx);
 		});
 	};
@@ -164,7 +166,7 @@ const App = (props: object) => {
 	 */
 	const refreshLinkIndex = (linkArr: Array<go.ObjectData>) => {
 		mapLinkKeyIdx.clear();
-		linkArr.forEach((l: go.ObjectData, idx: number) => {
+		linkArr?.forEach((l: go.ObjectData, idx: number) => {
 			mapLinkKeyIdx.set(l.key, idx);
 		});
 	};
@@ -357,7 +359,7 @@ const App = (props: object) => {
 
 	refreshNodeIndex(state.nodeDataArray);
 	refreshLinkIndex(state.linkDataArray);
-	const changeStateCallback = React.useCallback(async (childData: any,texto:string) => {
+	const changeStateCallback = React.useCallback(async (childData: any, texto: string) => {
 		setState(IniState);
 		setTimeout(() => {
 			refreshNodeIndex(childData.nodeDataArray);
@@ -367,7 +369,8 @@ const App = (props: object) => {
 		}, 10);
 	}, []);
 	const guardarTodo = () => {
-		const bloc = new Blob([JSON.stringify(state),textoState], { type: "text/plain;charset=utf-8" });
+		const arr = [JSON.stringify(state), "|||||", textoState];
+		const bloc = new Blob(arr, { type: "text/plain;charset=utf-8" });
 		saveAs(bloc, "myArchivo.txt");
 	};
 	const selectedData = state.selectedData;
@@ -378,25 +381,35 @@ const App = (props: object) => {
 	if (selectedData !== null) {
 		inspector = <SelectionInspector selectedData={state.selectedData} onInputChange={handleInputChange} />;
 	}
-	  // Create a reference to the hidden file input element
-	  const hiddenFileInput:any = React.useRef(null);
-  
-	  // Programatically click the hidden file input element
-	  // when the Button component is clicked
-	  const handleClick = (event: any) => {
+	// Create a reference to the hidden file input element
+	const hiddenFileInput: any = React.useRef(null);
+
+	// Programatically click the hidden file input element
+	// when the Button component is clicked
+	const handleClick = (event: any) => {
 		hiddenFileInput.current.click();
-	  };
-	const readFile=(e:any)=>{
-		const file= e.target.files[0];
+	};
+	const readFile = (e: any) => {
+		try{
+		const file = e.target.files[0];
 		const filereader = new FileReader();
 		filereader.readAsText(file);
-		filereader.onload=()=>{
-			console.log(filereader.result)
-		}
-		filereader.onerror=()=>{
-			console.log(filereader.error)
-		}
+		filereader.onload = () => {
+			const result = filereader.result as string;
+			const resultado = result.split("|||||");
+			console.log("resultado", JSON.parse(resultado[0]));
+			console.log("resultado texto", resultado[1]);
+			setState(JSON.parse(resultado[0]));
+			setTextoState(resultado[1]);
+		};
+		filereader.onerror = () => {
+			console.log(filereader.error);
+		};
+	}catch(e){
+		console.log("error");
 	}
+	
+	};
 
 	return (
 		<div className="w-screen h-screen">
@@ -408,13 +421,7 @@ const App = (props: object) => {
 				>
 					Nuevo
 				</button>
-				<input type="file"
-				name="Importar"
-				onChange={readFile}
-				ref={hiddenFileInput}
-				multiple={false}
-					className="hidden"
-				/>
+				<input type="file" name="Importar" onChange={readFile} ref={hiddenFileInput} multiple={false} className="hidden" />
 				<button
 					onClick={handleClick}
 					className="bg-blue-500 shadow-md hover:bg-blue-700 
@@ -431,8 +438,29 @@ const App = (props: object) => {
 				</button>
 			</nav>
 			<div className="relative" style={{ height: "97vh", width: "100vw" }}>
-				<div className="absolute z-10" style={{ height: "100%", width: "25%" }}>
-					<ParserGenerator changeStateCallback={changeStateCallback} stateData={state} />
+				<div className="absolute flex flex-nowrap z-10" style={{ height: "100%" }}>
+					<CSSTransition
+						in={animation}
+						timeout={800}
+						className="animate__animated"
+						classNames={{
+							enter: "animate__fadeInLeft animate__fast",
+							exit: "animate__fadeOutLeft animate__fast",
+						}}
+						unmountOnExit
+					>
+						<div className="w-5/6 md:w-full">
+							<ParserGenerator changeStateCallback={changeStateCallback} stateData={state} textoState={textoState} setTextoState={setTextoState}/>
+						</div>
+					</CSSTransition>
+					<button
+						className="h-28 text-xl mt-2 rounded-full flex items-center bg-gray-700 text-white"
+						onClick={() => {
+							setAnimationState((state) => !state);
+						}}
+					>
+						{"<"}
+					</button>
 				</div>
 				<div className="w-full h-full">
 					<DiagramWrapper

@@ -1,5 +1,11 @@
 
 @import "~animate.css/animate.css";  
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
 label {
   font: 300 1rem Roboto, helvetica, sans-serif;
   color: #212121; /* Grey 900 */
@@ -27,7 +33,39 @@ p {
   border-radius: 0px;
   box-shadow: inset 0px 0px 0px 0px #F0F0F0;
   }
+.text-icon-code{
+  border: #949194 1px solid;
+  border-radius: 50%;
+  display: flex;
+  width: 2rem;
+  padding: 0.5rem;
+  height: 2rem;
+  align-items: center;
+  justify-content: center;  
+}
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+.text-icon-rest{
+  display: flex;
+  gap: 0.5rem;
+  padding: 0 0.5rem;
+  
+  height: 2rem;
+  align-items: center;
+  justify-content: center;  
+}
+.parse-generator{
+  width: 100vmin;
+}
+.main-help{
+  height: calc(100vh - 3rem);
+  width: 100vmin
+}
+@media (min-width: 768px) {
+.main-help {
+  height: calc(100vh - 3rem);
+  width: 30vw
+} 
+ .parse-generator{
+  width: 33vw;
+}
+}

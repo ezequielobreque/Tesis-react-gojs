@@ -148,6 +148,7 @@ export class DiagramWrapper extends React.Component<DiagramProps, {}> {
 				go.TextBlock,
 				{ margin: 8, editable: true, font: "400 .875rem Roboto, sans-serif" }, // some room around the text
 				new go.Binding("text").makeTwoWay(),
+				new go.Binding("stroke", "stroke"),
 				new go.Binding("margin")
 			)
 		);
@@ -225,6 +226,7 @@ export class DiagramWrapper extends React.Component<DiagramProps, {}> {
 					go.TextBlock,
 					{ margin: 8, editable: true, font: "400 .875rem Roboto, sans-serif" }, // some room around the text
 					new go.Binding("text").makeTwoWay(),
+					new go.Binding("stroke", "stroke"),
 					new go.Binding("margin")
 				)
 			)
@@ -246,7 +248,7 @@ export class DiagramWrapper extends React.Component<DiagramProps, {}> {
 			new go.Binding("toSpot", "toSpot", go.Spot.parse),
 			//new go.Binding('segmentOrientation','seg'),
 			new go.Binding("routing", "routing", routingHandle),
-			$(go.Shape),
+			$(go.Shape,new go.Binding('strokeDashArray', 'dash')),
 			$(
 				go.Shape, // the link shape
 				{ stroke: "#303B45", strokeWidth: 2.5, toArrow: "" },

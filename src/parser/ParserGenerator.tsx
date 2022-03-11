@@ -42,10 +42,10 @@ export const ParserGenerator = ({ changeStateCallback, stateData, textoState,set
 		selectedData: null,
 		skipsDiagramUpdate: false,
 	};
-
+	
 	const [inputEditorMarker, setInputEditorMarker] = useState<any[]>([]);
 	// const [texto, setTexto] = useState<string>("COMPOSITE domicilio {ciudad,calle,numero};"
-	// +" RELTIONSHIP compro{    factura (1, 1),    persona (1, N)};"
+	// +" RELATIONSHIP compro{    factura (1, 1),    persona (1, N)};"
 	// +"ENTITY proveedor CHILD OF persona{cuit IDENTIFIER };"
 	// +"ENTITY persona COVERAGE (PARTIAL, OVERLAY){documento IDENTIFIER, cuil IDENTIFIER,nacimiento,apellido,nombre,    celular (0,1),   domicilio  }");
 	// const [texto, setTexto] = useState<string>(stringExample);
@@ -103,7 +103,7 @@ export const ParserGenerator = ({ changeStateCallback, stateData, textoState,set
 	// const ref = useRef(initialValue)
 
 	return (
-		<div className="w-full h-full" style={{minWidth:"400px"}}>
+		<div className="w-full h-full parse-generator">
 			{/* <textarea
             style={{width:'100%'}}
             value={texto}

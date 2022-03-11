@@ -2558,9 +2558,9 @@
         {
             "name": "Relationship",
             "children": {
-                "RELTIONSHIP": [
+                "RELATIONSHIP": [
                     {
-                        "image": "RELTIONSHIP",
+                        "image": "RELATIONSHIP",
                         "startOffset": 503,
                         "endOffset": 513,
                         "startLine": 34,
@@ -2569,7 +2569,7 @@
                         "endColumn": 11,
                         "tokenTypeIdx": 19,
                         "tokenType": {
-                            "name": "RELTIONSHIP",
+                            "name": "RELATIONSHIP",
                             "PATTERN": {},
                             "tokenTypeIdx": 19,
                             "CATEGORIES": [],
@@ -2928,9 +2928,9 @@
         {
             "name": "Relationship",
             "children": {
-                "RELTIONSHIP": [
+                "RELATIONSHIP": [
                     {
-                        "image": "RELTIONSHIP",
+                        "image": "RELATIONSHIP",
                         "startOffset": 568,
                         "endOffset": 578,
                         "startLine": 39,
@@ -2939,7 +2939,7 @@
                         "endColumn": 11,
                         "tokenTypeIdx": 19,
                         "tokenType": {
-                            "name": "RELTIONSHIP",
+                            "name": "RELATIONSHIP",
                             "PATTERN": {},
                             "tokenTypeIdx": 19,
                             "CATEGORIES": [],
@@ -3298,9 +3298,9 @@
         {
             "name": "Relationship",
             "children": {
-                "RELTIONSHIP": [
+                "RELATIONSHIP": [
                     {
-                        "image": "RELTIONSHIP",
+                        "image": "RELATIONSHIP",
                         "startOffset": 821,
                         "endOffset": 831,
                         "startLine": 56,
@@ -3309,7 +3309,7 @@
                         "endColumn": 11,
                         "tokenTypeIdx": 19,
                         "tokenType": {
-                            "name": "RELTIONSHIP",
+                            "name": "RELATIONSHIP",
                             "PATTERN": {},
                             "tokenTypeIdx": 19,
                             "CATEGORIES": [],
@@ -3668,9 +3668,9 @@
         {
             "name": "Relationship",
             "children": {
-                "RELTIONSHIP": [
+                "RELATIONSHIP": [
                     {
-                        "image": "RELTIONSHIP",
+                        "image": "RELATIONSHIP",
                         "startOffset": 882,
                         "endOffset": 892,
                         "startLine": 61,
@@ -3679,7 +3679,7 @@
                         "endColumn": 11,
                         "tokenTypeIdx": 19,
                         "tokenType": {
-                            "name": "RELTIONSHIP",
+                            "name": "RELATIONSHIP",
                             "PATTERN": {},
                             "tokenTypeIdx": 19,
                             "CATEGORIES": [],

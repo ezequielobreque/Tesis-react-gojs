@@ -11,6 +11,7 @@ interface ArrayOfComposites {
 
 interface EntidadVisualisacion {
 	key: number;
+	weak?:string;
 	nombre: string;
 	parent: number | null;
 	atributes: AtributesVisualisacion[];
@@ -47,6 +48,7 @@ interface INodeDataArray {
 	color: string;
 	type?: string;
 	group?: number;
+	stroke?:string;
 	isGroup?: boolean;
 	margin?: number;
 	loc?: string;
@@ -61,6 +63,7 @@ interface IlinkDataArray {
 	//arrow?: string;
 	routing?: string;
 	text?: string;
+	dash?:any;
 	//toText?: string;
 	fromSpot?: string;
 	toSpot?: string;
@@ -119,30 +122,34 @@ export class ActionsFunctionsClass {
 			type: node.type || "A",
 			margin: node.margin || 8,
 			loc: node.loc,
+			stroke:node.stroke,
 			isGroup: node.isGroup || undefined,
 			fig: node.fig || "RoundedRectangle",
-			height: node.height || 50,
-			width: node.width || 100,
+			height: node.height,
+			width: node.width
 		};
 	};
 	handleChild = (data: Children9) => {};
 	handleCoverage = (data: Children9) => {};
-	handleWeak = (data: Children9, key: number) => {
-		const entiNode = this.ArrayOfNodes.Entities.find((x) => x.key == key);
-		const atributeNode = entiNode?.atributes?.find((x) => x.identity === true);
-		const entiNumber = this.searchEntityNodeInArrayOfNodes(data.Weak![0].children.StringEntity[0].image) as number;
-		const enti = this.ArrayOfNodes.Entities.find((x) => x.key == entiNumber);
-		const atribute = enti?.atributes?.find((x) => x.identity === true);
-		//console.log(enti);
-		this.FinalDataNodes.linkDataArray.push(
-			this.createPropertiesGo({
-				Key: this.GetKeyForLink(),
-				to: atributeNode?.key!,
-				from: atribute?.key!,
-				//arrow: "Standard",
-				routing: "N",
-			})
-		);
+	handleWeak = (data: INodeDataArray) => {
+		data.color="transparent"
+
+		// const entiNode = this.ArrayOfNodes.Entities.find((x) => x.key == key);
+		// const atributeNode = entiNode?.atributes?.find((x) => x.identity === true);
+		// const entiNumber = this.searchEntityNodeInArrayOfNodes(data.Weak![0].children.StringEntity[0].image) as number;
+		// const enti = this.ArrayOfNodes.Entities.find((x) => x.key == entiNumber);
+		// const atribute = enti?.atributes?.find((x) => x.identity === true);
+		// //console.log(enti);
+		// this.FinalDataNodes.linkDataArray.push(
+		// 	this.createPropertiesGo({
+		// 		Key: this.GetKeyForLink(),
+		// 		to: atributeNode?.key!,
+		// 		from: atribute?.key!,
+		// 		//arrow: "Standard",
+		// 		routing: "N",
+		// 	})
+		// );
+		
 	};
 
 	createPropertiesGo(data: IlinkDataArray): IlinkDataArray {
@@ -154,6 +161,7 @@ export class ActionsFunctionsClass {
 			routing: data.routing || undefined,
 			fromSpot: data.fromSpot || undefined,
 			text: data.text || undefined,
+			dash:data.dash || undefined,
 			// toText: data.toText || undefined
 			to: data.to,
 			toSpot: data.toSpot || undefined,
@@ -181,6 +189,22 @@ export class ActionsFunctionsClass {
 				routing: "N",
 			})
 		);
+	}
+	moreThanOneIdentifier(keyOfParent: number, keyIdentifier: number) {
+		const entidadPadre = this.ArrayOfNodes?.Entities?.find((x) => x.key == keyOfParent);
+		const otroIdentificador = entidadPadre?.atributes?.find((x) => x.identity === true);
+		if (otroIdentificador && otroIdentificador.key!==keyIdentifier) {
+			this.FinalDataNodes?.linkDataArray?.push(
+				this.createPropertiesGo({
+					Key: this.GetKeyForLink(),
+					to: keyIdentifier,
+					from: otroIdentificador.key,
+					//arrow: "Standard",
+					routing: "N",
+					text: undefined,
+				})
+			);
+		}
 	}
 
 	handleProperties(data: PropertyEntity[], key: number) {
@@ -220,11 +244,13 @@ export class ActionsFunctionsClass {
 					});
 				}
 				let enti = this.ArrayOfNodes.Entities.find((x) => x.key == key);
+				if(enti){
 				enti!.atributes.push({
 					key: c.key,
 					nombre: c.text,
 					identity: x.children.IDENTIFIER ? true : false,
 				});
+				}
 				this.FinalDataNodes.linkDataArray.push(
 					this.createPropertiesGo({
 						Key: this.GetKeyForLink(),
@@ -232,9 +258,13 @@ export class ActionsFunctionsClass {
 						from: key,
 						//arrow: "Standard",
 						routing: "N",
+						dash: x.children.Calculated ? [5,5]:undefined,
 						text: this.handleCardinality(x.children),
 					})
 				);
+				// if (x.children.IDENTIFIER) {
+				// 	this.moreThanOneIdentifier(key, c.key);
+				// }
 			});
 		}
 	}
@@ -246,7 +276,7 @@ export class ActionsFunctionsClass {
 	}
 
 	handleRelations(data: Relation[], key: number) {
-		data.map((x) => {
+		data?.map((x) => {
 			const linking: IlinkDataArray = {
 				Key: this.GetKeyForLink(),
 				to: key,
@@ -276,10 +306,10 @@ export class ActionsFunctionsClass {
 		let x: INodeDataArray | null = {
 			key: this.GetKey(),
 			text: coverage,
-			color: "green",
+			color: "lawngreen",
 			isGroup: true,
-			height: 50,
-			width: 150,
+			height: undefined,
+			width: undefined,
 			type: "A",
 			margin: 5,
 			fig: "TriangleUp",
@@ -305,18 +335,24 @@ export class ActionsFunctionsClass {
 			x = {
 				key: this.GetKey(),
 				text: entities.children.StringEntity[0].image,
-				color: "red",
+				// color: "#ff425f",
+				// stroke:"white",
+				color:"pink",
 				isGroup: true,
 			};
 			// const resultado = this.nodeIsExistinInDataNode(x, this.FinalDataNodes);
 			// if (resultado) {
 			// 	x.loc = resultado.loc;
 			// }
+			if (entities.children.Weak) {
+				this.handleWeak(x);
+			}
 			this.FinalDataNodes.nodeDataArray.push(this.createNodeGo(x));
 
 			this.ArrayOfNodes.Entities.push({
 				key: x.key,
 				nombre: x.text,
+				weak:entities.children.Weak?entities.children.Weak[0].children.StringEntity[0].image:undefined,
 				parent: null,
 				atributes: [],
 			});
@@ -328,7 +364,7 @@ export class ActionsFunctionsClass {
 			if (entities.children.Coverage) {
 				const triangle = this.createTriangle(
 					x.key,
-					`(${entities.children.Coverage[0].children.COVERTURA[0].image.substring(0, 4)}, ${entities.children.Coverage[0].children.JERARQUIA[0].image.substring(0, 4)})`
+					`(${entities.children.Coverage[0].children.JERARQUIA[0].image.substring(0, 1)}, ${entities.children.Coverage[0].children.COVERTURA[0].image.substring(0, 1)})`
 				);
 				const linkToChildren: IlinkDataArray = {
 					Key: this.GetKeyForLink(),
@@ -350,8 +386,6 @@ export class ActionsFunctionsClass {
 				this.FinalDataNodes.linkDataArray.push(this.createPropertiesGo(linkingToParent));
 			} else if (entities.children.Coverage) {
 				//  this.handleCoverage(entities.children);
-			} else if (entities.children.Weak) {
-				this.handleWeak(entities.children, x.key);
 			}
 		}
 	};
@@ -362,14 +396,32 @@ export class ActionsFunctionsClass {
 			x = {
 				key: this.GetKey(),
 				text: relationship.children.StringEntity[0].image,
-				color: "blue",
+				// color: "#02a4d9",
+				// stroke:"white",
+				color:"lightblue",
+				margin: 2,
 				fig: "Diamond",
 			};
+			if (relationship.children && x !== null) {
+				relationship.children.Relation.map(child=>{
+
+					const aux =this.ArrayOfNodes.Entities.find((f) => f.nombre==child.children.StringEntity[0].image);
+					if(aux?.weak ){
+						if(relationship.children.Relation.some(elemento=>elemento.children.StringEntity[0].image===aux.weak)){
+							x!.color="transparent";
+
+						}}
+					}
+				)
+			}
 			// const resultado = this.nodeIsExistinInDataNode(x, this.FinalDataNodes);
 			// if (resultado) {
 			// 	x.loc = resultado.loc;
 			// }
 			this.FinalDataNodes.nodeDataArray.push(this.createNodeGo(x));
+			if(relationship.children.AttributesRelation){
+				this.handleProperties(relationship.children.AttributesRelation[0].children.PropertyEntity,x.key)
+			}
 		}
 		if (relationship.children && x !== null) {
 			this.handleRelations(relationship.children.Relation, x!.key);

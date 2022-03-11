@@ -35,12 +35,12 @@ ENTITY factura{
     total CALCULATED BY 'SUM(linea.subtotal)'
 };
 
-RELTIONSHIP atendio{
+RELATIONSHIP atendio{
     factura (1, 1),
     empleado (1, N)
 };
 
-RELTIONSHIP compro{
+RELATIONSHIP compro{
     factura (1, 1),
     persona (1, N)
 };
@@ -57,12 +57,12 @@ ENTITY producto{
     descripcion
 };
 
-RELTIONSHIP tiene{
+RELATIONSHIP tiene{
     linea (1, 1),
     producto (1, N)
 };
 
-RELTIONSHIP provee{
+RELATIONSHIP provee{
     producto (1, N),
     proveedor (1, N)
 }`

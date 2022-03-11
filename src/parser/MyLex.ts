@@ -17,9 +17,9 @@ const COVERAGE = createToken({ name: "COVERAGE", pattern: /COVERAGE/ })
 const CHILD = createToken({ name: "CHILD", pattern: /CHILD/ })
 const COMPOSITE = createToken({ name: "COMPOSITE", pattern: /COMPOSITE/ })
 const WEAK = createToken({ name: "WEAK", pattern: /WEAK/ })
-const RELTIONSHIP = createToken({ name: "RELTIONSHIP", pattern: /RELTIONSHIP/ })
+const RELATIONSHIP = createToken({ name: "RELATIONSHIP", pattern: /RELATIONSHIP/ })
 const CALCULATED = createToken({ name: "CALCULATED", pattern: /CALCULATED/ })
-
+const ATTRIBUTES = createToken({ name: "ATTRIBUTES", pattern: /ATTRIBUTES/ })
 const IDENTIFIER = createToken({ name: "IDENTIFIER", pattern: /IDENTIFIER/ })
 const BY = createToken({ name: "BY", pattern: /BY/ })
 
@@ -44,6 +44,15 @@ const RelationNumber = createToken({
   name: "RelationNumber",
   pattern: /0|1|\bn\b|\bN\b/
 })
+// const LOWER_BOUND = createToken({
+//   name: "LOWER_BOUND",
+//   pattern: /\b0|1\b/
+// })
+// const UPPER_BOUND = createToken({
+//   name: "UPPER_BOUND",
+//   pattern: /\b1|N\b/
+// })
+
 const JERARQUIA = createToken({
   name: "JERARQUIA",
   pattern: /\bTOTAL\b|\bPARTIAL\b/
@@ -54,7 +63,7 @@ const OF = createToken({
 })
 const COVERTURA = createToken({
   name: "COVERTURA",
-  pattern: /\bTOTAL\b|\bOVERLAY\b/
+  pattern: /\bEXCLUSIVE\b|\bOVERLAPPING\b/
 })
 
 const WhiteSpace = createToken({
@@ -66,6 +75,7 @@ const WhiteSpace = createToken({
 
 const allTokens = [ 
   LCurly,
+  
   RCurly,
   LSquare,
   RSquare,
@@ -83,8 +93,9 @@ const allTokens = [
   BY,
   IDENTIFIER,
   COMPOSITE,
-  RELTIONSHIP,
+  RELATIONSHIP,
   CALCULATED,
+  ATTRIBUTES,
   JERARQUIA,
   OF,
   COVERTURA,
@@ -154,13 +165,18 @@ export class JsonParserTypeScript extends CstParser {
   
 
   private relationship = this.RULE("Relationship", () => {
-    this.CONSUME(RELTIONSHIP)
+    this.CONSUME(RELATIONSHIP)
     this.CONSUME(StringEntity)
     this.CONSUME(LCurly)
     this.MANY_SEP({
       SEP: Comma,
       DEF: () => {
         this.SUBRULE(this.relation)
+      }
+    })
+    this.OPTION({
+      DEF: ()=>{
+       this.SUBRULE(this.attributesRelation)
       }
     })
     this.CONSUME(RCurly)
@@ -175,7 +191,17 @@ export class JsonParserTypeScript extends CstParser {
     this.CONSUME2(RelationNumber)
     this.CONSUME(RRound)
   })
-
+  private attributesRelation = this.RULE("AttributesRelation", () => {
+    this.CONSUME(ATTRIBUTES)
+    this.CONSUME(LCurly)
+    this.MANY_SEP({
+      SEP: Comma,
+      DEF: () => {
+        this.SUBRULE(this.propertyEntity)
+      }
+    })
+    this.CONSUME(RCurly)
+  })
   private manys = this.RULE("Manys", () => {    
     this.CONSUME(LRound)
     this.CONSUME1(RelationNumber)
@@ -214,12 +240,13 @@ export class JsonParserTypeScript extends CstParser {
     this.CONSUME(LCurly)
     this.AT_LEAST_ONE_SEP({
       SEP: Comma,
-      DEF: () => {
-        this.SUBRULE(this.propierties);
-      }
+      DEF: () => 
+        this.SUBRULE(this.propierties)
     })
     this.CONSUME(RCurly)
   })
+
+  
   private calculated=this.RULE("Calculated", () => {
     this.CONSUME(CALCULATED)
     this.CONSUME(BY)
@@ -230,6 +257,7 @@ export class JsonParserTypeScript extends CstParser {
   private propierties=this.RULE("Propierties", () => {
     this.CONSUME(StringEntity)
   })
+
 
   /*private objectItem = this.RULE("objectItem", () => {
     this.CONSUME(StringLiteral)

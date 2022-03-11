@@ -9,13 +9,15 @@ import * as React from "react";
 import { DiagramWrapper } from "./components/DiagramWrapper";
 import { SelectionInspector } from "./components/SelectionInspector";
 
-import "./App.css";
 import { useState } from "react";
 import { ParserGenerator } from "./parser/ParserGenerator";
 import "./text";
 import { CSSTransition } from "react-transition-group";
 import { DataOfNodes } from "./text";
 import { saveAs } from "file-saver";
+import { MainHelp } from "./components/help-info/MainHelp.component";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDownload, faPen, faPlus, faQuestion, faSave, faUpload } from "@fortawesome/free-solid-svg-icons";
 /**
  * Use a linkDataArray since we'll be using a GraphLinksModel,
  * and modelData for demonstration purposes. Note, though, that
@@ -148,6 +150,7 @@ const App = (props: object) => {
 	const [state, setState] = useState<any>(IniState);
 	const [textoState, setTextoState] = useState<string>("");
 	const [animation, setAnimationState] = useState(true);
+	const [helpTodo, sethelpTodo] = useState(false);
 	// init maps
 	// bind handler methods
 
@@ -390,54 +393,74 @@ const App = (props: object) => {
 		hiddenFileInput.current.click();
 	};
 	const readFile = (e: any) => {
-		try{
-		const file = e.target.files[0];
-		const filereader = new FileReader();
-		filereader.readAsText(file);
-		filereader.onload = () => {
-			const result = filereader.result as string;
-			const resultado = result.split("|||||");
-			console.log("resultado", JSON.parse(resultado[0]));
-			console.log("resultado texto", resultado[1]);
-			setState(JSON.parse(resultado[0]));
-			setTextoState(resultado[1]);
-		};
-		filereader.onerror = () => {
-			console.log(filereader.error);
-		};
-	}catch(e){
-		console.log("error");
-	}
-	
+		try {
+			const file = e.target.files[0];
+			const filereader = new FileReader();
+			filereader.readAsText(file);
+			filereader.onload = () => {
+				const result = filereader.result as string;
+				const resultado = result.split("|||||");
+				console.log("resultado", JSON.parse(resultado[0]));
+				console.log("resultado texto", resultado[1]);
+				setState(JSON.parse(resultado[0]));
+				setTextoState(resultado[1]);
+			};
+			filereader.onerror = () => {
+				console.log(filereader.error);
+			};
+		} catch (e) {
+			console.log("error");
+		}
 	};
 
 	return (
 		<div className="w-screen h-screen">
-			<nav className="bg-gray-800 z-50 w-full flex p-2 gap-8">
+			<nav className="bg-gray-800 z-50 w-full flex p-2 gap-6 md:gap-8">
 				<div className="text-gray-200 text-2xl"> BDD </div>
 				<button
-					className="bg-red-500 shadow-md hover:bg-red-700 
-				text-white text-center py-1 px-4 rounded-full"
+					className="text-white text-icon-code"
+					onClick={() => {
+						setAnimationState((state) => !state);
+					}}
 				>
-					Nuevo
+					<FontAwesomeIcon icon={faPen} />
+				</button>
+				<button
+					className="bg-red-500 shadow-md hover:bg-red-700 
+				text-white text-icon-rest rounded-full"
+				>
+					<FontAwesomeIcon icon={faPlus} />
+					<span className="hidden sm:block">Nuevo</span>
 				</button>
 				<input type="file" name="Importar" onChange={readFile} ref={hiddenFileInput} multiple={false} className="hidden" />
 				<button
 					onClick={handleClick}
 					className="bg-blue-500 shadow-md hover:bg-blue-700 
-				text-white text-center py-1 px-4 rounded-full"
+					text-white text-icon-rest rounded-full"
 				>
-					Importar
+					<FontAwesomeIcon icon={faUpload} />
+					<span className="hidden sm:block">Importar</span>
 				</button>
 				<button
 					onClick={guardarTodo}
 					className="bg-green-500 shadow-md hover:bg-green-700 
-				text-white text-center py-1 px-4 rounded-full"
+					text-white text-icon-rest rounded-full"
 				>
-					Guardar
+					<FontAwesomeIcon icon={faSave} />
+					<span className="hidden sm:block">Guardar</span>
+				</button>
+				<button
+					onClick={() => {
+						sethelpTodo(!helpTodo);
+					}}
+					className="bg-green-500 shadow-md hover:bg-green-700 
+					text-white text-icon-rest rounded-full"
+				>
+					<FontAwesomeIcon icon={faQuestion} />
+					<span className="hidden sm:block">Ayuda</span>
 				</button>
 			</nav>
-			<div className="relative" style={{ height: "97vh", width: "100vw" }}>
+			<div className="relative" style={{ height: "calc(100vh - 3rem)", width: "100vw" }}>
 				<div className="absolute flex flex-nowrap z-10" style={{ height: "100%" }}>
 					<CSSTransition
 						in={animation}
@@ -450,17 +473,9 @@ const App = (props: object) => {
 						unmountOnExit
 					>
 						<div className="w-5/6 md:w-full">
-							<ParserGenerator changeStateCallback={changeStateCallback} stateData={state} textoState={textoState} setTextoState={setTextoState}/>
+							<ParserGenerator changeStateCallback={changeStateCallback} stateData={state} textoState={textoState} setTextoState={setTextoState} />
 						</div>
 					</CSSTransition>
-					<button
-						className="h-28 text-xl mt-2 rounded-full flex items-center bg-gray-700 text-white"
-						onClick={() => {
-							setAnimationState((state) => !state);
-						}}
-					>
-						{"<"}
-					</button>
 				</div>
 				<div className="w-full h-full">
 					<DiagramWrapper
@@ -483,6 +498,22 @@ const App = (props: object) => {
           />
         </label> */}
 				{inspector}
+				<div className="absolute right-0 top-0 z-20 overflow-hidden ">
+					<CSSTransition
+						in={helpTodo}
+						timeout={800}
+						className="animate__animated relative  main-help overflow-y-auto flex flex-nowrap rounded-l-xl  bg-gray-800 h-full"
+						classNames={{
+							enter: "animate__fadeInRight animate__fast",
+							exit: "animate__fadeOutRight animate__fast",
+						}}
+						unmountOnExit
+					>
+						<div>
+							<MainHelp />
+						</div>
+					</CSSTransition>
+				</div>
 			</div>
 		</div>
 	);

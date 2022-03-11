@@ -11,7 +11,8 @@ export interface Relationship {
   }
   
   interface Children11 {
-    RELTIONSHIP: COMPOSITE[];
+    AttributesRelation: any;
+    RELATIONSHIP: COMPOSITE[];
     StringEntity: COMPOSITE[];
     LCurly: COMPOSITE[];
     Relation: Relation[];

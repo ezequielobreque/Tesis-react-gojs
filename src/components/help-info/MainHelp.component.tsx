@@ -28,7 +28,7 @@ export const MainHelp = () => {
 						<Back />
 						<div className="text-2xl text-center py-2">Entidades</div>
 						<div className="py-2">Las entidades representan clases de objetos de la realidad</div>
-						<div className="py-2">El sigiente es un ejemplo de la entidad Producto con </div>
+						<div className="py-2">El siguiente es un ejemplo de la entidad Producto con </div>
 						<div className="py-2 whitespace-pre-line">
 							{`ENTITY producto{
 							codigo IDENTIFIER,
@@ -43,7 +43,7 @@ export const MainHelp = () => {
 						<Back />
 						<div className="text-2xl text-center py-2">Interrelaciones</div>
 						<div className="py-2">Las interrelaciones representan agregaciones de dos o más entidades</div>
-						<div className="py-2">El sigiente es un ejemplo de una relacion entre producto y linea </div>
+						<div className="py-2">El siguiente es un ejemplo de una relacion entre producto y linea </div>
 						<div className="py-2 whitespace-pre-line">
 							{`ENTITY producto{
 							codigo IDENTIFIER,
@@ -69,7 +69,7 @@ export const MainHelp = () => {
 						<Back />
 						<div className="text-2xl text-center py-2">Atributos</div>
 						<div className="py-2">representan las propiedades básicas de las entidades o interrelaciones</div>
-						<div className="py-2">El sigiente es un ejemplo de persona con atributos simples calculados y compuestos</div>
+						<div className="py-2">El siguiente es un ejemplo de persona con atributos simples calculados y compuestos</div>
 						<div className="py-2 whitespace-pre-line">
 							{`
 							COMPOSITE domicilio{
@@ -96,7 +96,7 @@ export const MainHelp = () => {
 						<Back />
 						<div className="text-2xl text-center py-2">Herencia</div>
 						<div className="py-2">Una abstracción de generalización establece una correspondencia entre la clase genérica "(raíz)" y las clases subconjunto.</div>
-						<div className="py-2">El sigiente es un ejemplo de herencia para la clase persona.</div>
+						<div className="py-2">El siguiente es un ejemplo de herencia para la clase persona.</div>
 						<div className="py-2 whitespace-pre-line">
 							{`
                             ENTITY persona COVERAGE (PARTIAL, OVERLAPPING){

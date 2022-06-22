@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 
 export const MainHelp = () => {
-	const informacion = ["Entidades", "Atributos", "Interrelaciones", "Herencia"];
+	const informacion = ["Entidades", "Atributos", "Interrelaciones", "Herencia","Ejemplo"];
 	const [openInfo, setopenInfo] = useState("");
 
 	const Back = () => {
@@ -58,7 +58,7 @@ export const MainHelp = () => {
 								precio,
 								cantidad,
 								subtotal CALCULATED BY 'precio * cantidad'
-							};							
+							}							
 							`}
 						</div>
 					</div>
@@ -85,7 +85,7 @@ export const MainHelp = () => {
                                 nombre,
                                 celular (0,1),
                                 domicilio
-                            };
+                            }
                             `}
 						</div>
 					</div>
@@ -114,12 +114,90 @@ export const MainHelp = () => {
                             };
                             ENTITY proveedorer CHILD OF persona{
                                 cuit IDENTIFIER 
-                            };
+                            }
                             `}
 						</div>
 					</div>
 				);
-
+			case "Ejemplo":
+				return (
+					<div>
+						<Back />
+						<div className="text-2xl text-center py-2">Ejemplo</div>
+						<div className="py-2">El ejemplode abajo es un modelo típico de factura</div>
+						<div className="py-2">podes copiarlo y pegarlo en la aplicacion</div>
+						<div className="py-2 whitespace-pre-line">
+							{`
+                        COMPOSITE domicilio{
+							ciudad,
+							calle,
+							numero
+						};
+						
+						ENTITY persona COVERAGE (PARTIAL, OVERLAPPING){
+							documento IDENTIFIER,
+							cuil IDENTIFIER,
+							nacimiento,
+							edad CALCULATED BY 'HOY - nacimiento',
+							nombre,
+							celular (0,1),
+							domicilio
+						};
+						
+						ENTITY proveedor CHILD OF persona{
+							cuit IDENTIFIER 
+						};
+						
+						ENTITY empleado CHILD OF persona{
+							legajo IDENTIFIER
+						};
+						
+						ENTITY factura{
+							tipo IDENTIFIER,
+							numero,
+							fecha,
+							total CALCULATED BY 'SUM(linea.subtotal)'
+						};
+						
+						RELATIONSHIP atendio{
+							factura (1, 1),
+							empleado (1, N)
+						};
+						
+						RELATIONSHIP compro{
+							factura (1, 1),
+							persona (1, N)
+						};
+						
+						ENTITY linea WEAK OF factura{
+							numero IDENTIFIER,
+							precio,
+							cantidad,
+							subtotal CALCULATED BY 'precio * cantidad'
+						};
+						
+						ENTITY producto{
+							codigo IDENTIFIER,
+							descripcion
+						};
+						
+						RELATIONSHIP tiene{
+							linea (1, 1),
+							producto (1, N)
+						};
+						
+						RELATIONSHIP provee{
+							producto (1, N),
+							proveedor (1, N)
+						};
+						RELATIONSHIP pertenece{
+							linea (1, 1),
+							factura (1, N)
+						}
+                            `}
+						</div>
+					</div>
+				);
 			default:
 				break;
 		}

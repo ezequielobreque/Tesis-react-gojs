@@ -168,15 +168,15 @@ export class JsonParserTypeScript extends CstParser {
     this.CONSUME(RELATIONSHIP)
     this.CONSUME(StringEntity)
     this.CONSUME(LCurly)
+    this.OPTION({
+      DEF: ()=>{
+       this.SUBRULE(this.attributesRelation)
+      }
+    })
     this.MANY_SEP({
       SEP: Comma,
       DEF: () => {
         this.SUBRULE(this.relation)
-      }
-    })
-    this.OPTION({
-      DEF: ()=>{
-       this.SUBRULE(this.attributesRelation)
       }
     })
     this.CONSUME(RCurly)

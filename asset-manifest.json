@@ -12,14 +12,14 @@
     "static/js/4.2e7a8110.chunk.js.map": "/Tesis-react-gojs/static/js/4.2e7a8110.chunk.js.map",
     "static/js/5.8f485d39.chunk.js": "/Tesis-react-gojs/static/js/5.8f485d39.chunk.js",
     "static/js/5.8f485d39.chunk.js.map": "/Tesis-react-gojs/static/js/5.8f485d39.chunk.js.map",
-    "main.css": "/Tesis-react-gojs/static/css/main.dd367005.chunk.css",
-    "main.js": "/Tesis-react-gojs/static/js/main.f6ef596b.chunk.js",
-    "main.js.map": "/Tesis-react-gojs/static/js/main.f6ef596b.chunk.js.map",
+    "main.css": "/Tesis-react-gojs/static/css/main.0d2685c0.chunk.css",
+    "main.js": "/Tesis-react-gojs/static/js/main.53508c18.chunk.js",
+    "main.js.map": "/Tesis-react-gojs/static/js/main.53508c18.chunk.js.map",
     "runtime-main.js": "/Tesis-react-gojs/static/js/runtime-main.e50ae3b8.js",
     "runtime-main.js.map": "/Tesis-react-gojs/static/js/runtime-main.e50ae3b8.js.map",
     "static/css/8.e0f6ce01.chunk.css": "/Tesis-react-gojs/static/css/8.e0f6ce01.chunk.css",
-    "static/js/8.dc3aec48.chunk.js": "/Tesis-react-gojs/static/js/8.dc3aec48.chunk.js",
-    "static/js/8.dc3aec48.chunk.js.map": "/Tesis-react-gojs/static/js/8.dc3aec48.chunk.js.map",
+    "static/js/8.876fe90f.chunk.js": "/Tesis-react-gojs/static/js/8.876fe90f.chunk.js",
+    "static/js/8.876fe90f.chunk.js.map": "/Tesis-react-gojs/static/js/8.876fe90f.chunk.js.map",
     "static/js/9.a65ca71a.chunk.js": "/Tesis-react-gojs/static/js/9.a65ca71a.chunk.js",
     "static/js/9.a65ca71a.chunk.js.map": "/Tesis-react-gojs/static/js/9.a65ca71a.chunk.js.map",
     "static/js/10.36612f89.chunk.js": "/Tesis-react-gojs/static/js/10.36612f89.chunk.js",
@@ -252,15 +252,15 @@
     "static/js/123.97eb0938.chunk.js.map": "/Tesis-react-gojs/static/js/123.97eb0938.chunk.js.map",
     "index.html": "/Tesis-react-gojs/index.html",
     "static/css/8.e0f6ce01.chunk.css.map": "/Tesis-react-gojs/static/css/8.e0f6ce01.chunk.css.map",
-    "static/css/main.dd367005.chunk.css.map": "/Tesis-react-gojs/static/css/main.dd367005.chunk.css.map",
+    "static/css/main.0d2685c0.chunk.css.map": "/Tesis-react-gojs/static/css/main.0d2685c0.chunk.css.map",
     "static/js/116.14ab83ab.chunk.js.LICENSE.txt": "/Tesis-react-gojs/static/js/116.14ab83ab.chunk.js.LICENSE.txt",
-    "static/js/8.dc3aec48.chunk.js.LICENSE.txt": "/Tesis-react-gojs/static/js/8.dc3aec48.chunk.js.LICENSE.txt"
+    "static/js/8.876fe90f.chunk.js.LICENSE.txt": "/Tesis-react-gojs/static/js/8.876fe90f.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.e50ae3b8.js",
     "static/css/8.e0f6ce01.chunk.css",
-    "static/js/8.dc3aec48.chunk.js",
-    "static/css/main.dd367005.chunk.css",
-    "static/js/main.f6ef596b.chunk.js"
+    "static/js/8.876fe90f.chunk.js",
+    "static/css/main.0d2685c0.chunk.css",
+    "static/js/main.53508c18.chunk.js"
   ]
 }
